@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
@@ -27,14 +28,14 @@ public class HollowView extends View {
         return this.mTouchThrough;
     }
 
-    private ColorDrawable mCornerBackground;
+    private int mCornerColor = Color.TRANSPARENT;
 
-    public void setCornerBackground(ColorDrawable drawable) {
-        this.mCornerBackground = drawable;
+    public void setCornerColor(int color) {
+        this.mCornerColor = color;
     }
 
-    public ColorDrawable getCornerBackground() {
-        return this.mCornerBackground;
+    public int getCornerColor() {
+        return this.mCornerColor;
     }
 
 
@@ -63,15 +64,16 @@ public class HollowView extends View {
         TypedArray typed = context.getTheme().obtainStyledAttributes(attrs, R.styleable.HollowView, 0, 0);
         try {
             this.mTouchThrough = typed.getBoolean(R.styleable.HollowView_touchThrough, false);
+            this.mCornerColor = typed.getColor(R.styleable.HollowView_touchThrough, Color.TRANSPARENT);
         } finally {
             typed.recycle();
         }
 
         if (this.getBackground() != null) {
             if (this.getBackground() instanceof ColorDrawable) {
-                this.mCornerBackground = (ColorDrawable) this.getBackground();
+                this.mCornerColor = ((ColorDrawable) this.getBackground()).getColor();
             }
-            this.setBackground(null);
+            this.setBackgroundColor(Color.TRANSPARENT);
         }
     }
 
@@ -80,9 +82,7 @@ public class HollowView extends View {
         super.onDraw(canvas);
 
         Paint paint = new Paint();
-        if (this.mCornerBackground != null) {
-            paint.setColor(this.mCornerBackground.getColor());
-        }
+        paint.setColor(this.mCornerColor);
 
         canvas.drawPath(this.makePath(), paint);
     }
