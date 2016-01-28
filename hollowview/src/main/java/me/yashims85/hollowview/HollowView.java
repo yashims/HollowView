@@ -8,10 +8,15 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
+import android.graphics.Region;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
+
+import dalvik.bytecode.OpcodeInfo;
 
 /**
  * Created by yashims85 on 2016/01/13.
@@ -28,14 +33,14 @@ public class HollowView extends View {
         return this.mTouchThrough;
     }
 
-    private int mCornerColor = Color.TRANSPARENT;
+    private Drawable mCornerDrawable = null;
 
-    public void setCornerColor(int color) {
-        this.mCornerColor = color;
+    public void setCornerDrawable(Drawable drawable) {
+        this.mCornerDrawable = drawable;
     }
 
-    public int getCornerColor() {
-        return this.mCornerColor;
+    public Drawable getCornerDrawable() {
+        return this.mCornerDrawable;
     }
 
 
@@ -64,15 +69,14 @@ public class HollowView extends View {
         TypedArray typed = context.getTheme().obtainStyledAttributes(attrs, R.styleable.HollowView, 0, 0);
         try {
             this.mTouchThrough = typed.getBoolean(R.styleable.HollowView_touchThrough, false);
-            this.mCornerColor = typed.getColor(R.styleable.HollowView_touchThrough, Color.TRANSPARENT);
         } finally {
             typed.recycle();
         }
 
         if (this.getBackground() != null) {
-            if (this.getBackground() instanceof ColorDrawable) {
-                this.mCornerColor = ((ColorDrawable) this.getBackground()).getColor();
-            }
+            this.setCornerDrawable(
+                    this.getBackground().getConstantState().newDrawable()
+            );
             this.setBackgroundColor(Color.TRANSPARENT);
         }
     }
@@ -82,15 +86,30 @@ public class HollowView extends View {
         super.onDraw(canvas);
 
         Paint paint = new Paint();
-        paint.setColor(this.mCornerColor);
+        if (this.getCornerDrawable() != null) {
+            if (this.getCornerDrawable() instanceof ColorDrawable) {
+               // Log.d("yashims85", "SET Color");
+                paint.setColor(
+                        ((ColorDrawable) this.getCornerDrawable()).getColor()
+                );
+            }
+        }
 
-        canvas.drawPath(this.makePath(), paint);
+        if (this.getCornerDrawable() != null) {
+            this.getCornerDrawable().setBounds(this.getBackground().getBounds());
+            Log.d("yashims85", "bounds:" + this.getCornerDrawable().getBounds() + "bgBounds:" + this.getBackground().getBounds() + " color:" + ((ColorDrawable) this.getCornerDrawable()).getColor() + " colorFilter:" + this.getCornerDrawable().getColorFilter());
+            canvas.clipPath(this.makePath(), Region.Op.DIFFERENCE);
+            this.getCornerDrawable().draw(canvas);
+            //canvas.clipPath(this.makePath());
+        }
+
+        //canvas.drawPath(this.makePath(), paint);
     }
 
     protected Path makePath() {
         Path path = new Path();
         RectF rect = new RectF(0.0f, 0.0f, this.getWidth(), this.getHeight());
-        path.addRect(rect, Path.Direction.CW);
+        //path.addRect(rect, Path.Direction.CW);
         return path;
     }
 }

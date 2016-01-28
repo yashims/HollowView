@@ -15,10 +15,17 @@
         android:layout_height="wrap_content"
         android:text="Hello World!" />
 
+    <!--
     <me.yashims85.hollowview.OvalHollowView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#b0000000"
         app:touchThrough="true"
         />
+        -->
+    <me.yashims85.hollowview.OvalHollowView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:touchThrough="true"
+        android:background="@mipmap/6ec12e9a60e38777f022cd662b7deaa4741e1975" />
 </RelativeLayout>
