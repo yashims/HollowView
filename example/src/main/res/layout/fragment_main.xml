@@ -23,9 +23,47 @@
         app:touchThrough="true"
         />
         -->
+    <View
+        android:id="@+id/view_dummy_top"
+        android:layout_width="match_parent"
+        android:layout_height="16dp"
+        android:background="#ff0000"
+        android:layout_alignParentTop="true"
+        />
+    <View
+        android:id="@+id/view_dummy_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="16dp"
+        android:background="#ff0000"
+        android:layout_alignParentBottom="true"
+        />
+    <View
+        android:id="@+id/view_dummy_left"
+        android:layout_width="16dp"
+        android:layout_height="wrap_content"
+        android:background="#ff0000"
+        android:layout_alignParentLeft="true"
+        android:layout_above="@id/view_dummy_bottom"
+        android:layout_below="@id/view_dummy_top"
+        />
+    <View
+        android:id="@+id/view_dummy_right"
+        android:layout_width="16dp"
+        android:layout_height="wrap_content"
+        android:background="#ff0000"
+        android:layout_alignParentRight="true"
+        android:layout_above="@id/view_dummy_bottom"
+        android:layout_below="@id/view_dummy_top"
+        />
     <me.yashims85.hollowview.OvalHollowView
+        android:id="@+id/view_hollow"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@id/view_dummy_bottom"
+        android:layout_below="@id/view_dummy_top"
+        android:layout_toLeftOf="@id/view_dummy_right"
+        android:layout_toRightOf="@id/view_dummy_left"
         app:touchThrough="true"
-        android:background="@mipmap/6ec12e9a60e38777f022cd662b7deaa4741e1975" />
+        android:background="#55000000"
+        />
 </RelativeLayout>
