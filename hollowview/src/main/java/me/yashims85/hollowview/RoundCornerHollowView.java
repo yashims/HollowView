@@ -43,9 +43,9 @@ public class RoundCornerHollowView extends HollowView {
     @Override
     protected void init(Context context, AttributeSet attrs) {
         super.init(context, attrs);
-        TypedArray typed = context.getTheme().obtainStyledAttributes(attrs, R.styleable.HollowView, 0, 0);
+        TypedArray typed = context.getTheme().obtainStyledAttributes(attrs, R.styleable.RoundCornerHollowView, 0, 0);
         try {
-            this.cornerRadius = typed.getFloat(R.styleable.HollowView_cornerRadius, 0.0f);
+            this.cornerRadius = typed.getFloat(R.styleable.RoundCornerHollowView_cornerRadius, 0.0f);
         } finally {
             typed.recycle();
         }

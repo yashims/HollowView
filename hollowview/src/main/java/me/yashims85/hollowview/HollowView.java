@@ -2,7 +2,6 @@ package me.yashims85.hollowview;
 
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Path;
@@ -18,16 +17,6 @@ import android.view.View;
  * Created by yashims85 on 2016/01/13.
  */
 public class HollowView extends View {
-
-    private boolean touchThrough = false;
-
-    public void setTouchThrough(boolean through) {
-        this.touchThrough = through;
-    }
-
-    public boolean getTouchThrough() {
-        return this.touchThrough;
-    }
 
     private Drawable edgeDrawable = null;
 
@@ -61,13 +50,6 @@ public class HollowView extends View {
     }
 
     protected void init(Context context, AttributeSet attrs) {
-        TypedArray typed = context.getTheme().obtainStyledAttributes(attrs, R.styleable.HollowView, 0, 0);
-        try {
-            this.touchThrough = typed.getBoolean(R.styleable.HollowView_touchThrough, false);
-        } finally {
-            typed.recycle();
-        }
-
         if (this.getBackground() != null) {
             this.setEdgeDrawable(
                     this.getBackground().getConstantState().newDrawable()

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="HollowView">
-        <attr name="touchThrough" format="boolean" />
+    <declare-styleable name="RoundCornerHollowView">
         <attr name="cornerRadius" format="float" />
     </declare-styleable>
 </resources>
