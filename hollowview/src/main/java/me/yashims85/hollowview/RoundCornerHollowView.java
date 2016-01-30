@@ -4,7 +4,6 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Path;
-import android.graphics.RectF;
 import android.os.Build;
 import android.util.AttributeSet;
 
@@ -13,14 +12,14 @@ import android.util.AttributeSet;
  */
 public class RoundCornerHollowView extends HollowView {
 
-    private float mCornerRadius = 0.0f;
+    private float cornerRadius = 0.0f;
 
-    public void setmCornerRadius(float radius) {
-        this.mCornerRadius = radius;
+    public void setCornerRadius(float radius) {
+        this.cornerRadius = radius;
     }
 
-    public float getmCornerRadius() {
-        return this.mCornerRadius;
+    public float getCornerRadius() {
+        return this.cornerRadius;
     }
 
     public RoundCornerHollowView(Context context) {
@@ -46,7 +45,7 @@ public class RoundCornerHollowView extends HollowView {
         super.init(context, attrs);
         TypedArray typed = context.getTheme().obtainStyledAttributes(attrs, R.styleable.HollowView, 0, 0);
         try {
-            this.mCornerRadius = typed.getFloat(R.styleable.HollowView_cornerRadius, 0.0f);
+            this.cornerRadius = typed.getFloat(R.styleable.HollowView_cornerRadius, 0.0f);
         } finally {
             typed.recycle();
         }
@@ -54,9 +53,13 @@ public class RoundCornerHollowView extends HollowView {
 
     @Override
     protected Path makePath() {
-        Path path = super.makePath();
-        RectF rect = new RectF(0.0f, 0.0f, this.getWidth(), this.getHeight());
-        path.addRoundRect(rect, this.mCornerRadius, this.mCornerRadius, Path.Direction.CCW);
+        Path path = new Path();
+        path.addRoundRect(
+                this.getPaddingAdjustedRectF(),
+                this.cornerRadius,
+                this.cornerRadius,
+                Path.Direction.CCW
+        );
         return path;
     }
 }

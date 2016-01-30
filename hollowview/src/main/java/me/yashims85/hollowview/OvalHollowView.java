@@ -3,7 +3,6 @@ package me.yashims85.hollowview;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Path;
-import android.graphics.RectF;
 import android.os.Build;
 import android.util.AttributeSet;
 
@@ -31,9 +30,8 @@ public class OvalHollowView extends HollowView {
 
     @Override
     protected Path makePath() {
-        Path path = super.makePath();
-        RectF rect = new RectF(0.0f, 0.0f, this.getWidth(), this.getHeight());
-        path.addOval(rect, Path.Direction.CCW);
+        Path path = new Path();
+        path.addOval(this.getPaddingAdjustedRectF(), Path.Direction.CCW);
         return path;
     }
 }

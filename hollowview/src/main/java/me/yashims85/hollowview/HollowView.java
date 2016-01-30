@@ -5,44 +5,39 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Region;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
-
-import dalvik.bytecode.OpcodeInfo;
 
 /**
  * Created by yashims85 on 2016/01/13.
  */
 public class HollowView extends View {
 
-    private boolean mTouchThrough = false;
+    private boolean touchThrough = false;
 
     public void setTouchThrough(boolean through) {
-        this.mTouchThrough = through;
+        this.touchThrough = through;
     }
 
     public boolean getTouchThrough() {
-        return this.mTouchThrough;
+        return this.touchThrough;
     }
 
-    private Drawable mCornerDrawable = null;
+    private Drawable edgeDrawable = null;
 
-    public void setCornerDrawable(Drawable drawable) {
-        this.mCornerDrawable = drawable;
+    public void setEdgeDrawable(Drawable drawable) {
+        this.edgeDrawable = drawable;
     }
 
-    public Drawable getCornerDrawable() {
-        return this.mCornerDrawable;
+    public Drawable getEdgeDrawable() {
+        return this.edgeDrawable;
     }
-
 
     public HollowView(Context context) {
         super(context);
@@ -68,13 +63,13 @@ public class HollowView extends View {
     protected void init(Context context, AttributeSet attrs) {
         TypedArray typed = context.getTheme().obtainStyledAttributes(attrs, R.styleable.HollowView, 0, 0);
         try {
-            this.mTouchThrough = typed.getBoolean(R.styleable.HollowView_touchThrough, false);
+            this.touchThrough = typed.getBoolean(R.styleable.HollowView_touchThrough, false);
         } finally {
             typed.recycle();
         }
 
         if (this.getBackground() != null) {
-            this.setCornerDrawable(
+            this.setEdgeDrawable(
                     this.getBackground().getConstantState().newDrawable()
             );
             this.setBackgroundColor(Color.TRANSPARENT);
@@ -85,31 +80,26 @@ public class HollowView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        Paint paint = new Paint();
-        if (this.getCornerDrawable() != null) {
-            if (this.getCornerDrawable() instanceof ColorDrawable) {
-               // Log.d("yashims85", "SET Color");
-                paint.setColor(
-                        ((ColorDrawable) this.getCornerDrawable()).getColor()
-                );
-            }
-        }
-
-        if (this.getCornerDrawable() != null) {
-            this.getCornerDrawable().setBounds(this.getBackground().getBounds());
-            Log.d("yashims85", "bounds:" + this.getCornerDrawable().getBounds() + "bgBounds:" + this.getBackground().getBounds() + " color:" + ((ColorDrawable) this.getCornerDrawable()).getColor() + " colorFilter:" + this.getCornerDrawable().getColorFilter());
+        Drawable drw = this.getEdgeDrawable();
+        if (drw != null) {
+            Rect r = new Rect();
+            this.getLocalVisibleRect(r);
+            drw.setBounds(r);
             canvas.clipPath(this.makePath(), Region.Op.DIFFERENCE);
-            this.getCornerDrawable().draw(canvas);
-            //canvas.clipPath(this.makePath());
+            drw.draw(canvas);
         }
-
-        //canvas.drawPath(this.makePath(), paint);
     }
 
     protected Path makePath() {
-        Path path = new Path();
-        RectF rect = new RectF(0.0f, 0.0f, this.getWidth(), this.getHeight());
-        //path.addRect(rect, Path.Direction.CW);
-        return path;
+        return new Path();
+    }
+
+    protected RectF getPaddingAdjustedRectF() {
+        return new RectF(
+                this.getPaddingLeft(),
+                this.getPaddingTop(),
+                this.getWidth() - this.getPaddingRight(),
+                this.getHeight() - this.getPaddingBottom()
+        );
     }
 }
