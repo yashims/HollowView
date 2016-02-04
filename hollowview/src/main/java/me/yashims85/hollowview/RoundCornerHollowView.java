@@ -28,24 +28,25 @@ public class RoundCornerHollowView extends HollowView {
 
     public RoundCornerHollowView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.setup(context, attrs);
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public RoundCornerHollowView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        this.setup(context, attrs);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public RoundCornerHollowView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+        this.setup(context, attrs);
     }
 
-    @Override
-    protected void init(Context context, AttributeSet attrs) {
-        super.init(context, attrs);
+    protected void setup(Context context, AttributeSet attrs) {
         TypedArray typed = context.getTheme().obtainStyledAttributes(attrs, R.styleable.RoundCornerHollowView, 0, 0);
         try {
-            this.cornerRadius = typed.getFloat(R.styleable.RoundCornerHollowView_cornerRadius, 0.0f);
+            this.setCornerRadius(typed.getFloat(R.styleable.RoundCornerHollowView_cornerRadius, 0.0f));
         } finally {
             typed.recycle();
         }
@@ -56,8 +57,8 @@ public class RoundCornerHollowView extends HollowView {
         Path path = new Path();
         path.addRoundRect(
                 this.getPaddingAdjustedRectF(),
-                this.cornerRadius,
-                this.cornerRadius,
+                this.getCornerRadius(),
+                this.getCornerRadius(),
                 Path.Direction.CCW
         );
         return path;
