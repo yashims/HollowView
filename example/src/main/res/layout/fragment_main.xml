@@ -63,7 +63,6 @@
         android:layout_below="@id/view_dummy_top"
         android:layout_toLeftOf="@id/view_dummy_right"
         android:layout_toRightOf="@id/view_dummy_left"
-        app:touchThrough="true"
         android:background="#55000000"
         />
 </RelativeLayout>
