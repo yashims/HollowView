@@ -30,3 +30,5 @@ proguard/
 *.iml
 /.idea/
 .DS_Store
+
+gradle.properties
